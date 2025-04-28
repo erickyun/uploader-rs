@@ -1,4 +1,4 @@
-name: Build go-ul_linux_x86 (Rust version)
+name: Build go-ul_linux_x86_64 (Rust)
 
 on:
   push:
@@ -19,19 +19,18 @@ jobs:
       with:
         toolchain: stable
         override: true
-        target: i686-unknown-linux-gnu
 
-    - name: Install dependencies for cross-compilation
-      run: sudo apt-get update && sudo apt-get install -y gcc-multilib
+    - name: Install OpenSSL development libraries
+      run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev
 
     - name: Build binary
       run: |
         mkdir -p build
-        cargo build --release --target i686-unknown-linux-gnu
-        cp target/i686-unknown-linux-gnu/release/go-upload build/go-ul_linux_x86
+        cargo build --release
+        cp target/release/go-upload build/go-ul_linux_x86_64
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: go-ul_linux_x86
-        path: build/go-ul_linux_x86
+        name: go-ul_linux_x86_64
+        path: build/go-ul_linux_x86_64
